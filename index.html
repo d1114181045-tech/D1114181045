@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>打地鼠遊戲</title>
+    <style>
+        body { text-align: center; font-family: Arial; background-color: #f0f0f0; }
+        #game { width: 330px; margin: 20px auto; display: grid; grid-template-columns: repeat(3, 100px); gap: 10px; }
+        .hole { width: 100px; height: 100px; background-color: #795548; border-radius: 50%; cursor: pointer; border: 4px solid #3e2723; }
+        .active { background-color: #ff5722; background-image: radial-gradient(circle, #ffeb3b, #ff5722); }
+        h1 { color: #333; }
+        .score-box { font-size: 24px; margin: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>🎯 打地鼠遊戲</h1>
+    <div class="score-box">分數：<span id="score">0</span></div>
+    <button onclick="startGame()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">開始遊戲</button>
+
+    <div id="game">
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+        <div class="hole" onclick="hit(this)"></div>
+    </div>
+
+    <script>
+        let score = 0;
+        let gameInterval;
+        const holes = document.querySelectorAll(".hole");
+
+        function startGame() {
+            score = 0;
+            document.getElementById("score").innerText = score;
+            if (gameInterval) clearInterval(gameInterval);
+            
+            gameInterval = setInterval(() => {
+                holes.forEach(h => h.classList.remove("active"));
+                let randomHole = holes[Math.floor(Math.random() * holes.length)];
+                randomHole.classList.add("active");
+            }, 800);
+            
+            // 30秒後自動停止
+            setTimeout(() => {
+                clearInterval(gameInterval);
+                alert("遊戲結束！你的得分是：" + score);
+            }, 30000);
+        }
+
+        function hit(element) {
+            if (element.classList.contains("active")) {
+                score++;
+                document.getElementById("score").innerText = score;
+                element.classList.remove("active");
+            }
+        }
+    </script>
+</body>
+</html>
